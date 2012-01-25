@@ -106,29 +106,36 @@ function connecticonomy ($user)
 	
 }
 
-function envoior ($user,$dest, $bdd, $or)
+function envoior ($user,$dest, $bdd, $or_saisit)
 {
-$or = htmlspecialchars($or);
-if (preg_match("#^[0-9]$#", $or))
+$or_saisit = htmlspecialchars($or_saisit);
+if (preg_match("#^[0-9]+$#", $or_saisit)) //si $or est un chiffre
 {
-if ($or !=0)
+if ($or_saisit > 0)
 {
 $req = $bdd->prepare('SELECT balance FROM iconomy WHERE username = ?');
-$req->execute(array($user)); //on recupère l'argent de destinataire
-$ore = $req->fetch();
-$oruser=$ore['balance']-$or;
-echo $ordest;
+$req->execute(array($user)); //on recupère l'argent de l'envoyeur
+$or_user = $req->fetch();
+$or_user=$or_user['balance']-$or_saisit; // Or de l'user après envoie
 
+if ($or_user < 0) //Si l'envoyeur aura < 0 or
+{
+echo 'Vous n\'avez pas assez d\'argent';
+}
+else
+{
 $req = $bdd->prepare('SELECT balance FROM iconomy WHERE username = ?');
-$req->execute(array($dest)); //on récupère l'argent de l'envoyeur
-$ors = $req->fetch(); 
-$ordest=$ors['balance']+$or;
-echo $oruser;
+$req->execute(array($dest)); //on récupère l'argent du destinateur
+$or_destinataire = $req->fetch(); 
+$or_destinataire=$or_destinataire['balance']+$or_saisit; // Or du destinataire après envoie
 
 $req = $bdd->prepare('UPDATE iconomy SET balance=:balance WHERE username= :username');
-$req->execute(array('balance' =>$oruser, 'username' => $user));
+$req->execute(array('balance' =>$or_user, 'username' => $user)); //On applique les changements
+
 $req = $bdd->prepare('UPDATE iconomy SET balance=? WHERE username=?');
-$req->execute(array($ordest,$dest));
+$req->execute(array($or_destinataire,$dest));
+echo 'L\'argent a bien été envoyé';
+}
 }
 else
 {
