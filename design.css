@@ -1,0 +1,185 @@
+@font-face { 
+    font-family: 'Minecraft';
+    src: url('minecraft.eot');
+    src: url('minecraft.eot?#iefix') format('embedded-opentype'),
+         url('minecraft.woff') format('woff'),
+         url('minecraft.ttf') format('truetype'),
+         url('minecraft.svg#LearningCurveProRegular') format('svg');
+}
+
+body {
+    background-color: #222222;
+    background-image: url("images/bg.gif");
+    color: #E0D0D0;
+    font-family: Arial,Helvetica,sans-serif;
+    height: 200px;
+	margin: auto;
+	width:100%;
+}
+
+a
+{
+   text-decoration: underline;
+   color: white;
+}
+
+#header_bg {
+    background-image: url("images/grass.gif");   
+    border-bottom: 3px solid #000000;
+    height: 180px;
+    position: absolute;
+    width: 100%;
+}
+
+#logo
+{
+    background-image: url("images/logo.png");
+    top: 0;
+    width: 480px;
+    height: 180px;
+    margin:auto;
+}
+
+#version
+{
+position:absolute;
+top:10px;
+left:1050px;
+}
+
+
+#page
+{
+	width : 800px;
+	margin-top: 50px;
+	margin-left:450px;
+}
+
+nav
+{
+    margin-top: 183px;
+    display: inline-block;
+    background-image: url("images/wood.gif");
+    width: 100%;
+    height: 64px;
+    text-align: center;
+    border-bottom: 3px solid #000000;
+}
+
+nav ul
+{
+    list-style-type: none;
+}
+
+nav li
+{
+    display: inline-block;
+    margin-right: 15px;
+}
+
+nav a
+{
+    text-decoration: none;
+    color:black;
+    font-size:1.5em;
+    font-family:'Minecraft';
+    
+}
+	
+.menu_left
+{
+	width: 160px;
+	margin-top: 20px;
+	margin-left: 130px;
+	padding-left: 10px;
+	float: left;
+}
+
+.titre_menu
+{
+ border-bottom: 1px solid #000000;
+     text-align: center;
+}
+
+.content_menu
+{
+background-image: url("images/bgl.gif");
+margin-top: 0px;
+float: left;
+width: 200px;
+margin-bottom: 50px;
+}
+
+.content_menu form
+{
+     text-align: center;
+}
+
+.content_menu input
+{
+     width:150px;
+}
+
+.content_menu p
+{
+ padding-left:5px;
+ }
+
+label
+{
+display:block;
+width:250px;
+float:left;
+}
+
+#connexion
+{
+width:300px;
+height:64px;
+background-image: url("images/dirt.gif");
+float:left;
+position:absolute;
+top:60px;
+left:100px;
+}
+
+#achev
+{
+width:320px;
+height:64px;
+background-image: url("images/achev.png");
+float:left;
+position:absolute;
+top: 50px;
+left: 1200px;
+}
+
+#achev p
+{
+line-height:8px;
+font-family:'Minecraft';
+text-align:center;
+color:yellow;
+font-size:1em;
+}
+#footer
+{
+text-align:center;
+padding-top:100px;
+}
+
+#connexion h3
+{
+vertical-align: middle;
+text-align:center;
+}
+
+#avatar
+{
+text-align: center;
+}
+
+.chiffre
+{
+width:30px;
+}
