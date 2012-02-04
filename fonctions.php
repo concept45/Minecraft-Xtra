@@ -323,42 +323,42 @@ echo $argent;
 }
 }
 
-function avatar ($ingame) //génération de l'avatar
+function avatar ($pseudo) //génération de l'avatar
 {
 
-	if (!$_SESSION['avatar']) //génération un seul fois par session
-	{
-
-        if(imagecreatefrompng("http://minecraft.net/skin/".$ingame.".png"))
+if (!$_SESSION['avatar']) //génération un seul fois par session
 {
 
-$source = imagecreatefrompng("http://minecraft.net/skin/".$ingame.".png");
+        if(imagecreatefrompng("http://minecraft.net/skin/".$pseudo.".png")) //Si le joueur existe
+        {
 
-$destination = imagecreate(8,8);
+        $source = imagecreatefrompng("http://minecraft.net/skin/".$pseudo.".png"); //on récupère l'image
 
-
-$largeur_source = imagesx($source);
-
-$hauteur_source = imagesy($source);
-
-$largeur_destination = imagesx($destination);
-
-$hauteur_destination = imagesy($destination);
+        $destination = imagecreate(8,8); //On créer une image de 8x8
 
 
-$destination_x = 0;
+        $largeur_source = imagesx($source); //On récupère la largeur
 
-$destination_y =  0;
-imagecopymerge($destination, $source, $destination_x, $destination_y, 8, 8, $largeur_source, $hauteur_source, 100);
+        $hauteur_source = imagesy($source); //On récupère la hauteur
+
+        $largeur_destination = imagesx($destination);
+
+        $hauteur_destination = imagesy($destination);
 
 
-imagepng($destination, "./avatars/".$ingame.".png" );
-$dest = imagecreate(64, 64);
-$src = imagecreatefrompng("./avatars/".$ingame.".png");
-imagecopyresized($dest, $src, 0, 0, 0, 0, 64, 64, 8, 8);
-imagepng($dest, "./avatars/".$ingame.".png" );
-$_SESSION['avatar'] = 1;
-}
+        $destination_x = 0;
+
+        $destination_y =  0;
+        imagecopymerge($destination, $source, $destination_x, $destination_y, 8, 8, $largeur_source, $hauteur_source, 100);
+
+
+        imagepng($destination, "./avatars/".$pseudo.".png" );//On enregistre
+        $dest = imagecreate(64, 64); //On agrandit l'image
+        $src = imagecreatefrompng("./avatars/".$pseudo.".png");
+        imagecopyresized($dest, $src, 0, 0, 0, 0, 64, 64, 8, 8);
+        imagepng($dest, "./avatars/".$pseudo.".png" );
+        $_SESSION['avatar'] = 1; //L'avatar a été généré
+        }
 }
 
 }
