@@ -17,20 +17,20 @@ $nb_ligne = $req->rowCount();
 if ($nb_ligne ==0)
 {
     
-    // On change les données 
+    // On change les donnï¿½es 
 $reqe = $bdd->prepare('INSERT INTO allopass(code, pseudo) VALUES (?,?)');
 $reqe->execute(array($_GET['code'], $_SESSION['pseudo']));
 
 $reqs = $bdd->prepare('UPDATE users SET dons=dons+1 WHERE pseudo = ?');
 $reqs->execute(array($_SESSION['pseudo']));
-    // On change les données 
-$reqa = $bdd->prepare('UPDATE iconomy SET balance=balance+? WHERE username = ?');
+    // On change les donnï¿½es 
+$reqa = $bdd->prepare('UPDATE iConomy SET balance=balance+? WHERE username = ?');
 $reqa->execute(array($dons,$_SESSION['pseudo']));
-echo"Vous avez bien effectué le don";
+echo"Vous avez bien effectuï¿½ le don";
 }
 else
 {
-echo 'code deja utlisé';
+echo 'code deja utlisï¿½';
 }
 }
 catch (Exception $e)
@@ -76,7 +76,7 @@ catch (Exception $e)
 }
 else
 {
-echo 'Votre compte n\'a pas encore été confirmé';
+echo 'Votre compte n\'a pas encore ï¿½tï¿½ confirmï¿½';
 }
 }
 else
