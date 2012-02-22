@@ -73,7 +73,7 @@ function listmenus ($etat)
     {
     while ($donnees = $req->fetch())
 	{
-	echo ''.$donnees['nom'].' <a href=?admin=desactiver&nom='.$donnees['nom'].'>Désactiver</a></br>';
+	echo ''.$donnees['nom'].' <a href=?admin=desactiver&nom='.$donnees['nom'].'>Dï¿½sactiver</a></br>';
 	}
     }
 	
@@ -100,7 +100,7 @@ echo'Offline';
 function connecticonomy ($user)
 {
     $bdd = database();
-    $req = $bdd->prepare('SELECT * FROM iconomy WHERE username=?');
+    $req = $bdd->prepare('SELECT * FROM iConomy WHERE username=?');
 	$req->execute(array($user));
 	return $req;
 	
@@ -113,10 +113,10 @@ if (preg_match("#^[0-9]+$#", $or_saisit)) //si $or est un chiffre
 {
 if ($or_saisit > 0)
 {
-$req = $bdd->prepare('SELECT balance FROM iconomy WHERE username = ?');
-$req->execute(array($user)); //on recupère l'argent de l'envoyeur
+$req = $bdd->prepare('SELECT balance FROM iConomy WHERE username = ?');
+$req->execute(array($user)); //on recupï¿½re l'argent de l'envoyeur
 $or_user = $req->fetch();
-$or_user=$or_user['balance']-$or_saisit; // Or de l'user après envoie
+$or_user=$or_user['balance']-$or_saisit; // Or de l'user aprï¿½s envoie
 
 if ($or_user < 0) //Si l'envoyeur aura < 0 or
 {
@@ -124,27 +124,27 @@ echo 'Vous n\'avez pas assez d\'argent';
 }
 else
 {
-$req = $bdd->prepare('SELECT balance FROM iconomy WHERE username = ?');
-$req->execute(array($dest)); //on récupère l'argent du destinateur
+$req = $bdd->prepare('SELECT balance FROM iConomy WHERE username = ?');
+$req->execute(array($dest)); //on rï¿½cupï¿½re l'argent du destinateur
 $or_destinataire = $req->fetch(); 
-$or_destinataire=$or_destinataire['balance']+$or_saisit; // Or du destinataire après envoie
+$or_destinataire=$or_destinataire['balance']+$or_saisit; // Or du destinataire aprï¿½s envoie
 
 $req = $bdd->prepare('UPDATE iconomy SET balance=:balance WHERE username= :username');
 $req->execute(array('balance' =>$or_user, 'username' => $user)); //On applique les changements
 
 $req = $bdd->prepare('UPDATE iconomy SET balance=? WHERE username=?');
 $req->execute(array($or_destinataire,$dest));
-echo 'L\'argent a bien été envoyé';
+echo 'L\'argent a bien ï¿½tï¿½ envoyï¿½';
 }
 }
 else
 {
-echo 'Metter un chiffre différent de 0';
+echo 'Metter un chiffre diffï¿½rent de 0';
 }
 }
 else
 {
-echo 'Seul les chiffres sont acceptés';
+echo 'Seul les chiffres sont acceptï¿½s';
 }
 
 
@@ -184,7 +184,7 @@ function listuser ($user,$bdd)
 	Destinataire : 
 	<select name="choix">
     <?php
-    $req = $bdd->query('SELECT * FROM iconomy ORDER BY username');
+    $req = $bdd->query('SELECT * FROM iConomy ORDER BY username');
     while ($donnees = $req->fetch())
     {
     if ($donnees['username'] != $user)
@@ -210,8 +210,8 @@ function ligne($req)
 
 function hachage($mdp) //hachage du mot de passe
 {
-$prefix = 'lsfdjlsds-è_ççsà)dsf)isdjfdsbkh';
-$sufix = 'dsfhsdhf_eyaàçzeruzyfshsdf,';
+$prefix = 'lsfdjlsds-ï¿½_ï¿½ï¿½sï¿½)dsf)isdjfdsbkh';
+$sufix = 'dsfhsdhf_eyaï¿½ï¿½zeruzyfshsdf,';
 $mdp =''.$prefix.''.$mdp.''.$sufix.'';
 $mdp = sha1($mdp);
 return $mdp;
@@ -237,7 +237,7 @@ $email = htmlspecialchars($email);
 		$mdp=hachage($mdp);
 		$req = $bdd->prepare('INSERT INTO users(pseudo, pass, email) VALUES(?, ?, ?)');
 		$req -> execute(array($pseudo,$mdp,$email));
-		echo 'Vous vous êtes bien fait enregistrer';
+		echo 'Vous vous ï¿½tes bien fait enregistrer';
         }
         else
         {
@@ -246,12 +246,12 @@ $email = htmlspecialchars($email);
 		}
 		else
 		{
-		echo 'Les mots de passes sont différent';
+		echo 'Les mots de passes sont diffï¿½rent';
 		}
 }
 else
 {
-echo 'Un compte existant utilise les mêmes identifiants';
+echo 'Un compte existant utilise les mï¿½mes identifiants';
 }
 
 }
@@ -281,19 +281,19 @@ if (($attaques < 5 && $date == $tempsbdd ) || ($tempsbdd != $date) || ($ip != $b
 {
 if (($nb_ligne ==0)||($sqlmdp !=$mdp))
 	{
-    if ($tempsbdd != $date) //Si pas la même date, on fait une reset du compteur
+    if ($tempsbdd != $date) //Si pas la mï¿½me date, on fait une reset du compteur
     {
     $bdd = database();
     $req = $bdd->prepare('UPDATE users SET dateattaque = NOW(), nombreattaques = 1, ip=? WHERE pseudo = ?');
     $req->execute(array($ip,$_POST['pseudo']));
-	echo 'Connexion échoué';
+	echo 'Connexion ï¿½chouï¿½';
     }
     else
     {
     $bdd = database();
     $req = $bdd->prepare('UPDATE users SET dateattaque = NOW(), nombreattaques = nombreattaques+1, ip=? WHERE pseudo = ?');
     $req->execute(array($ip,$_POST['pseudo']));
-	echo 'Connexion échoué';
+	echo 'Connexion ï¿½chouï¿½';
     }
     }
 	else
@@ -308,7 +308,7 @@ if (($nb_ligne ==0)||($sqlmdp !=$mdp))
 }
 else
 {
-echo'Le nombre de connexion maximal est dépassé.';
+echo'Le nombre de connexion maximal est dï¿½passï¿½.';
 }
 
 }
@@ -323,23 +323,23 @@ echo $argent;
 }
 }
 
-function avatar ($pseudo) //génération de l'avatar
+function avatar ($pseudo) //gï¿½nï¿½ration de l'avatar
 {
 
-if (!$_SESSION['avatar']) //génération un seul fois par session
+if (!$_SESSION['avatar']) //gï¿½nï¿½ration un seul fois par session
 {
 
         if(imagecreatefrompng("http://minecraft.net/skin/".$pseudo.".png")) //Si le joueur existe
         {
 
-        $source = imagecreatefrompng("http://minecraft.net/skin/".$pseudo.".png"); //on récupère l'image
+        $source = imagecreatefrompng("http://minecraft.net/skin/".$pseudo.".png"); //on rï¿½cupï¿½re l'image
 
-        $destination = imagecreate(8,8); //On créer une image de 8x8
+        $destination = imagecreate(8,8); //On crï¿½er une image de 8x8
 
 
-        $largeur_source = imagesx($source); //On récupère la largeur
+        $largeur_source = imagesx($source); //On rï¿½cupï¿½re la largeur
 
-        $hauteur_source = imagesy($source); //On récupère la hauteur
+        $hauteur_source = imagesy($source); //On rï¿½cupï¿½re la hauteur
 
         $largeur_destination = imagesx($destination);
 
@@ -357,7 +357,7 @@ if (!$_SESSION['avatar']) //génération un seul fois par session
         $src = imagecreatefrompng("./avatars/".$pseudo.".png");
         imagecopyresized($dest, $src, 0, 0, 0, 0, 64, 64, 8, 8);
         imagepng($dest, "./avatars/".$pseudo.".png" );
-        $_SESSION['avatar'] = 1; //L'avatar a été généré
+        $_SESSION['avatar'] = 1; //L'avatar a ï¿½tï¿½ gï¿½nï¿½rï¿½
         }
 }
 
