@@ -226,32 +226,21 @@ $i = 0;
 <table>
    <tr>
        <td>Nom</td>
-       <td>Version</td>
-       <td>Compatibilité</td>
+       <td style="padding-left:100px";>Version</td>
+       <td style="padding-left:40px;">Compatibilité</td>
    </tr>
    <?php
 while($file = readdir($dir)) {
 	if($file != '.' && $file != '..' && !is_dir($dirname.$file))
 	{
-	if ($file == 'Quandary[Summer].4.1.6.zip')
-	{
-		echo '<span style="color:red">Texture officiel :</color></span> </br>';
-	$nom=preg_replace('#([a-z0-9&[\]]+)\.([a-z0-9_]+)\.([0-9]+)\.([0-9]+)\.([a-z]{3})#i','$1',$file);
-	$version=preg_replace('#([a-z0-9&[\]]+)\.([a-z0-9_])\.([0-9]+)\.([0-9]+)\.([a-z]{3})#i','$2',$file);
-	$minecraft=preg_replace('#([a-z0-9&[\]]+)\.([a-z0-9_]+)\.([0-9]+)\.([0-9]+)\.([a-z]{3})#i','$3.$4',$file);
-	echo '<a href="'.$dirname.$file.'">'.$nom.'</a>&nbsp;&nbsp;&nbsp;&nbsp; Version :'.$version.' &nbsp;&nbsp;&nbsp;&nbsp;Compatibilité :'.$minecraft.'</br></br></br>' ;
-	$i++;
-	} 
-	else{
-	
+
 	$nom=preg_replace('#([a-z0-9&[\]]+)\.([a-z0-9_]+)\.([0-9]+)\.([0-9]+)\.([a-z]{3})#i','$1',$file);
 	$version=preg_replace('#([a-z0-9&[\]]+)\.([a-z0-9_]+)\.([0-9]+)\.([0-9]+)\.([a-z]{3})#i','$2',$file);
 	$minecraft=preg_replace('#([a-z0-9&[\]]+)\.([a-z0-9_]+)\.([0-9]+)\.([0-9]+)\.([a-z]{3})#i','$3.$4',$file);
-	echo '<tr><td><a href="'.$dirname.$file.'">'.$nom.' </a></td><td>'.$version.' </td><td> '.$minecraft.'</td></tr>';
-	}
+	echo '<tr><td><a href="'.$dirname.$file.'">'.$nom.' </a></td><td style="padding-left:100px;">'.$version.' </td><td style="padding-left:40px;"> '.$minecraft.'</td></tr>';
+	} 
 }
-}
-
+echo '</table>';
 closedir($dir);
 }
 	else
@@ -285,6 +274,7 @@ echo $acceuil;
 }
 
 ?>
+
 <div id=footer>Johnrazeur production</div>
 </div>
 
