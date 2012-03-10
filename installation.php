@@ -145,7 +145,7 @@ else
   <form action="?page=step2" method="post">
   <label>Adresse de la base de donn�es :</label>
   <input type="text" name="bdd"></br>
-  <label>Nom de la table :</label>
+  <label>Nom de la base :</label>
   <input type="text" name="table"></br>
   <label>Identifiant :</label>
   <input type="text" name="user"></br>
