@@ -7,7 +7,7 @@
 label
 {
 display:block;
-width:250px;
+width:300px;
 float:left;
 }
         </style>
@@ -31,7 +31,7 @@ $mdp = \''.$_POST['mdp'].'\';
 
 fputs($fichier, $code);
 fclose($fichier);
-echo 'Installation "config.php" réussit !</br>';
+echo 'Installation "config.php" rï¿½ussit !</br>';
 
 
 include('config.php');
@@ -42,7 +42,7 @@ $req = $bdd->query('CREATE TABLE IF NOT EXISTS `allopass` (
   `Pseudo` varchar(255) NOT NULL,
   `code` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;');
-echo'Installation de "allopass" réussi !</br>';
+echo'Installation de "allopass" rï¿½ussi !</br>';
 
 
 $req = $bdd->query('CREATE TABLE IF NOT EXISTS `config` (
@@ -56,13 +56,13 @@ $req = $bdd->query('CREATE TABLE IF NOT EXISTS `config` (
 $bdd->exec('INSERT INTO `config` (`id`, `nom`, `valeur`) VALUES
 (1, \'monnaie\', \'Or\'),
 (2, \'ip\', \'88.190.237.44\'),
-(3, \'acceuil\', \'<p>Bienvenue sur HappyWorld Xtra</p>\r\n<p>Vous pourez ici gérer votre compte, gérer vos impots, encherir.</p>\r\n<p>Pour vous connecter, vous devez vous inscrires et vous devez être accepté a la white-list.</p>\'),
+(3, \'acceuil\', \'<p>Bienvenue sur HappyWorld Xtra</p>\r\n<p>Vous pourez ici gï¿½rer votre compte, gï¿½rer vos impots, encherir.</p>\r\n<p>Pour vous connecter, vous devez vous inscrires et vous devez ï¿½tre acceptï¿½ a la white-list.</p>\'),
 (4, \'perms\', \'1\'),
 (5, \'textures\', \'1\'),
 (6, \'menu_monnaie\', \'1\'),
 (7, \'dons\', \'75\'),
 (8, \'allopass\', \'\');');
-echo'Installation de "config" réussi !</br>';
+echo'Installation de "config" rï¿½ussi !</br>';
 
 $req = $bdd->query('CREATE TABLE IF NOT EXISTS `menus` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -77,7 +77,7 @@ $bdd->exec('INSERT INTO `menus` (`id`, `nom`, `valeur`, `valeur2`) VALUES
 (2, \'textures\', \'1\', \'\'),
 (3, \'monnaie\', \'1\', \'\'),
 (4, \'externe\', \'\', \'\');');
-echo'Installation de "menus" réussi !</br>';
+echo'Installation de "menus" rï¿½ussi !</br>';
 
 $req = $bdd->query('CREATE TABLE IF NOT EXISTS `prachat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -92,7 +92,7 @@ $bdd->exec('INSERT INTO `prachat` (`id`, `permissions`, `prix`) VALUES
 (3, \'falsebook.ic.mc0111\', 30),
 (4, \'falsebook.blocks.hiddenswitch.create\', 25),
 (6, \'falsebook.blocks.gate\', 40);');
-echo'Installation de "prachat" réussi !</br>';
+echo'Installation de "prachat" rï¿½ussi !</br>';
 
 $req = $bdd->query('CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -106,7 +106,7 @@ $req = $bdd->query('CREATE TABLE IF NOT EXISTS `users` (
   `ip` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;');
-echo'Installation de "users" réussi !</br></br></br></br>';
+echo'Installation de "users" rï¿½ussi !</br></br></br></br>';
 echo'Veuillez saisir les informations du compte administrateur :</br></br>';
 ?>
 <form action="?page=step3" method="post">
@@ -126,24 +126,24 @@ elseif ($_GET['page'] == 'step3')
 include('config.php');
 $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
 $bdd = new PDO('mysql:host='.$host.';dbname='.$dbname.'', ''.$user.'', ''.$mdp.'', $pdo_options);
-$prefix = 'lsfdjlsds-è_ççsà)dsf)isdjfdsbkh';
-$sufix = 'dsfhsdhf_eyaàçzeruzyfshsdf,';
+$prefix = 'lsfdjlsds-ï¿½_ï¿½ï¿½sï¿½)dsf)isdjfdsbkh';
+$sufix = 'dsfhsdhf_eyaï¿½ï¿½zeruzyfshsdf,';
 $mdp =''.$prefix.''.$_POST['mdp'].''.$sufix.'';
 $mdp = sha1($mdp);
 $req = $bdd->prepare('INSERT INTO users(pseudo, pass, rang) VALUES(?, ?, ?)');
 $req -> execute(array($_POST['pseudo'],$mdp,2));
-echo 'Installation effectué avec succès, supprimer "installation.php" pour des raisons de sécurité';
+echo 'Installation effectuï¿½ avec succï¿½s, supprimer "installation.php" pour des raisons de sï¿½curitï¿½';
 }
 }
 else
 {
 ?>
   Bienvenue dans le script d'installation de Minecraft Xtra.</br>
-  Nous avons besoin de plusieurs données pour continuer l'installation.</br>
+  Nous avons besoin de plusieurs donnï¿½es pour continuer l'installation.</br>
   Merci de bien vouloir completer le formulaire suivant.</br></br>
   
   <form action="?page=step2" method="post">
-  <label>Adresse de la base de données :</label>
+  <label>Adresse de la base de donnï¿½es :</label>
   <input type="text" name="bdd"></br>
   <label>Nom de la table :</label>
   <input type="text" name="table"></br>
