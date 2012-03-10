@@ -5,9 +5,8 @@
 	{
 	if (isset($_GET['code']))
 	{
-try
-{
-$bdd = database();
+
+global $bdd;
 	
     $req = $bdd->prepare('SELECT * FROM allopass WHERE code = ?');
 	$req->execute(array($_GET['code']));
@@ -17,26 +16,22 @@ $nb_ligne = $req->rowCount();
 if ($nb_ligne ==0)
 {
     
-    // On change les donn�es 
+    // On change les données 
 $reqe = $bdd->prepare('INSERT INTO allopass(code, pseudo) VALUES (?,?)');
 $reqe->execute(array($_GET['code'], $_SESSION['pseudo']));
 
 $reqs = $bdd->prepare('UPDATE users SET dons=dons+1 WHERE pseudo = ?');
 $reqs->execute(array($_SESSION['pseudo']));
-    // On change les donn�es 
-$reqa = $bdd->prepare('UPDATE iConomy SET balance=balance+? WHERE username = ?');
+    // On change les données 
+$reqa = $bdd->prepare('UPDATE iconomy SET balance=balance+? WHERE username = ?');
 $reqa->execute(array($dons,$_SESSION['pseudo']));
-echo"Vous avez bien effectu� le don";
+echo"Vous avez bien effectué le don";
 }
 else
 {
-echo 'code deja utlis�';
+echo 'code deja utlisé';
 }
-}
-catch (Exception $e)
-{
-        die('Erreur : ' . $e->getMessage());
-}
+
 }
 	else
 	{
@@ -54,29 +49,22 @@ echo $allopass ;
 
 <?php
 }
-try
-{
+
 echo '</br></br><h2>Envoie d\'argent</h2></br></br>';
-$bdd = database();
+global $bdd;
 listuser($_SESSION['pseudo'], $bdd);
 ?>
 Somme : <input class='chiffre' type="text" name="somme" /></br>
     <input type="submit" value="Envoyer" /></br>
 </form>
-<?php
-}
-catch (Exception $e)
-{
-        die('Erreur : ' . $e->getMessage());
-}
-?>
+
 <?php
 
 }
 }
 else
 {
-echo 'Votre compte n\'a pas encore �t� confirm�';
+echo 'Votre compte n\'a pas encore été confirmé';
 }
 }
 else

@@ -11,55 +11,34 @@ function database() //connection a mysql
 
 function infoserveur($element)
 {
- try
-{
-$bdd = database();
+global $bdd;
 $req = $bdd->prepare('SELECT * FROM config WHERE nom=?');
 $req->execute(array($element));
 $reponse = $req->fetch();
 return $reponse['valeur'];
 }
-	catch (Exception $e)
-	{
-        die('Erreur : ' . $e->getMessage());
-	}
-}
 
 function infomenus($element)
 {
- try
-{
-$bdd = database();
+global $bdd;
 $req = $bdd->prepare('SELECT * FROM menus WHERE nom=?');
 $req->execute(array($element));
 $reponse = $req->fetch();
 return $reponse['valeur'];
 }
-	catch (Exception $e)
-	{
-        die('Erreur : ' . $e->getMessage());
-	}
-}
 
 function infomenus2($element)
 {
- try
-{
-$bdd = database();
+global $bdd;
 $req = $bdd->prepare('SELECT * FROM menus WHERE nom=?');
 $req->execute(array($element));
 $reponse = $req->fetch();
 return $reponse['valeur2'];
 }
-	catch (Exception $e)
-	{
-        die('Erreur : ' . $e->getMessage());
-	}
-}
 
 function listmenus ($etat)
 {
-    $bdd = database();
+    global $bdd;
     $req = $bdd->prepare('SELECT * FROM menus WHERE valeur=?');
     $req->execute(array($etat));
     if ($etat == 0)
@@ -73,7 +52,7 @@ function listmenus ($etat)
     {
     while ($donnees = $req->fetch())
 	{
-	echo ''.$donnees['nom'].' <a href=?admin=desactiver&nom='.$donnees['nom'].'>D�sactiver</a></br>';
+	echo ''.$donnees['nom'].' <a href=?admin=desactiver&nom='.$donnees['nom'].'>Désactiver</a></br>';
 	}
     }
 	
@@ -99,56 +78,13 @@ echo'Offline';
 
 function connecticonomy ($user)
 {
-    $bdd = database();
-    $req = $bdd->prepare('SELECT * FROM iConomy WHERE username=?');
+    global $bdd;
+    $req = $bdd->prepare('SELECT * FROM iconomy WHERE username=?');
 	$req->execute(array($user));
 	return $req;
 	
 }
 
-function envoior ($user,$dest, $bdd, $or_saisit)
-{
-$or_saisit = htmlspecialchars($or_saisit);
-if (preg_match("#^[0-9]+$#", $or_saisit)) //si $or est un chiffre
-{
-if ($or_saisit > 0)
-{
-$req = $bdd->prepare('SELECT balance FROM iConomy WHERE username = ?');
-$req->execute(array($user)); //on recup�re l'argent de l'envoyeur
-$or_user = $req->fetch();
-$or_user=$or_user['balance']-$or_saisit; // Or de l'user apr�s envoie
-
-if ($or_user < 0) //Si l'envoyeur aura < 0 or
-{
-echo 'Vous n\'avez pas assez d\'argent';
-}
-else
-{
-$req = $bdd->prepare('SELECT balance FROM iConomy WHERE username = ?');
-$req->execute(array($dest)); //on r�cup�re l'argent du destinateur
-$or_destinataire = $req->fetch(); 
-$or_destinataire=$or_destinataire['balance']+$or_saisit; // Or du destinataire apr�s envoie
-
-$req = $bdd->prepare('UPDATE iconomy SET balance=:balance WHERE username= :username');
-$req->execute(array('balance' =>$or_user, 'username' => $user)); //On applique les changements
-
-$req = $bdd->prepare('UPDATE iconomy SET balance=? WHERE username=?');
-$req->execute(array($or_destinataire,$dest));
-echo 'L\'argent a bien �t� envoy�';
-}
-}
-else
-{
-echo 'Metter un chiffre diff�rent de 0';
-}
-}
-else
-{
-echo 'Seul les chiffres sont accept�s';
-}
-
-
-}
 
 function connexion ($user, $bdd)
 {
@@ -160,9 +96,7 @@ function connexion ($user, $bdd)
 
 function listrang ($rang)
 {
-try
-{
-    $bdd = database();
+global $bdd;
     $req = $bdd->prepare('SELECT * FROM users WHERE rang=?');
     $req->execute(array($rang));
     while ($donnees = $req->fetch())
@@ -170,11 +104,6 @@ try
 	echo ''.$donnees['pseudo'].' [<a href=?page=confirm&action=augmente&pseudo='.$donnees['pseudo'].'>+</a>][<a href=?page=confirm&action=diminue&pseudo='.$donnees['pseudo'].'>-</a>]</br>';
 	}
     
-    }
-	catch (Exception $e)
-	{
-        die('Erreur : ' . $e->getMessage());
-	}
 	
 }
 function listuser ($user,$bdd)
@@ -184,7 +113,7 @@ function listuser ($user,$bdd)
 	Destinataire : 
 	<select name="choix">
     <?php
-    $req = $bdd->query('SELECT * FROM iConomy ORDER BY username');
+    $req = $bdd->query('SELECT * FROM iconomy ORDER BY username');
     while ($donnees = $req->fetch())
     {
     if ($donnees['username'] != $user)
@@ -210,16 +139,20 @@ function ligne($req)
 
 function hachage($mdp) //hachage du mot de passe
 {
-$prefix = 'lsfdjlsds-�_��s�)dsf)isdjfdsbkh';
-$sufix = 'dsfhsdhf_eya��zeruzyfshsdf,';
+$prefix = 'lsfdjlsds-è_ççsà)dsf)isdjfdsbkh';
+$sufix = 'dsfhsdhf_eyaàçzeruzyfshsdf,';
 $mdp =''.$prefix.''.$mdp.''.$sufix.'';
 $mdp = sha1($mdp);
 return $mdp;
 
 }
 
-function inscription ($bdd, $pseudo, $mdp, $cmdp, $email)
+function inscription ($pseudo, $mdp, $cmdp, $email)
 {
+
+global $bdd;
+    $req = $bdd->prepare('SELECT * FROM users WHERE pseudo=?');
+	$req->execute(array($pseudo));
 
 if (!empty($pseudo)&&!empty($mdp)&&!empty($cmdp)&&!empty($email)) //Si les champs ne sont pas vide
 {
@@ -237,7 +170,7 @@ $email = htmlspecialchars($email);
 		$mdp=hachage($mdp);
 		$req = $bdd->prepare('INSERT INTO users(pseudo, pass, email) VALUES(?, ?, ?)');
 		$req -> execute(array($pseudo,$mdp,$email));
-		echo 'Vous vous �tes bien fait enregistrer';
+		echo 'Vous vous êtes bien fait enregistrer';
         }
         else
         {
@@ -246,12 +179,12 @@ $email = htmlspecialchars($email);
 		}
 		else
 		{
-		echo 'Les mots de passes sont diff�rent';
+		echo 'Les mots de passes sont différent';
 		}
 }
 else
 {
-echo 'Un compte existant utilise les m�mes identifiants';
+echo 'Un compte existant utilise les mêmes identifiants';
 }
 
 }
@@ -281,19 +214,19 @@ if (($attaques < 5 && $date == $tempsbdd ) || ($tempsbdd != $date) || ($ip != $b
 {
 if (($nb_ligne ==0)||($sqlmdp !=$mdp))
 	{
-    if ($tempsbdd != $date) //Si pas la m�me date, on fait une reset du compteur
+    if ($tempsbdd != $date) //Si pas la même date, on fait une reset du compteur
     {
-    $bdd = database();
+    global $bdd;
     $req = $bdd->prepare('UPDATE users SET dateattaque = NOW(), nombreattaques = 1, ip=? WHERE pseudo = ?');
     $req->execute(array($ip,$_POST['pseudo']));
-	echo 'Connexion �chou�';
+	echo 'Connexion échoué';
     }
     else
     {
-    $bdd = database();
+    global $bdd;
     $req = $bdd->prepare('UPDATE users SET dateattaque = NOW(), nombreattaques = nombreattaques+1, ip=? WHERE pseudo = ?');
     $req->execute(array($ip,$_POST['pseudo']));
-	echo 'Connexion �chou�';
+	echo 'Connexion échoué';
     }
     }
 	else
@@ -308,7 +241,7 @@ if (($nb_ligne ==0)||($sqlmdp !=$mdp))
 }
 else
 {
-echo'Le nombre de connexion maximal est d�pass�.';
+echo'Le nombre de connexion maximal est dépassé.';
 }
 
 }
@@ -323,23 +256,23 @@ echo $argent;
 }
 }
 
-function avatar ($pseudo) //g�n�ration de l'avatar
+function avatar ($pseudo) //génération de l'avatar
 {
 
-if (!$_SESSION['avatar']) //g�n�ration un seul fois par session
+if (!$_SESSION['avatar']) //génération un seul fois par session
 {
 
         if(imagecreatefrompng("http://minecraft.net/skin/".$pseudo.".png")) //Si le joueur existe
         {
 
-        $source = imagecreatefrompng("http://minecraft.net/skin/".$pseudo.".png"); //on r�cup�re l'image
+        $source = imagecreatefrompng("http://minecraft.net/skin/".$pseudo.".png"); //on récupère l'image
 
-        $destination = imagecreate(8,8); //On cr�er une image de 8x8
+        $destination = imagecreate(8,8); //On créer une image de 8x8
 
 
-        $largeur_source = imagesx($source); //On r�cup�re la largeur
+        $largeur_source = imagesx($source); //On récupère la largeur
 
-        $hauteur_source = imagesy($source); //On r�cup�re la hauteur
+        $hauteur_source = imagesy($source); //On récupère la hauteur
 
         $largeur_destination = imagesx($destination);
 
@@ -357,9 +290,12 @@ if (!$_SESSION['avatar']) //g�n�ration un seul fois par session
         $src = imagecreatefrompng("./avatars/".$pseudo.".png");
         imagecopyresized($dest, $src, 0, 0, 0, 0, 64, 64, 8, 8);
         imagepng($dest, "./avatars/".$pseudo.".png" );
-        $_SESSION['avatar'] = 1; //L'avatar a �t� g�n�r�
+        $_SESSION['avatar'] = 1; //L'avatar a été généré
         }
 }
+
+
+
 
 }
 ?>

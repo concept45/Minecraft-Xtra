@@ -1,8 +1,6 @@
 <?php
 
-try
-{
-$bdd = database();
+global $bdd;
 
 
 
@@ -20,16 +18,12 @@ $req = $bdd->prepare('SELECT * FROM permissions WHERE name = ?');
 $req->execute(array($_SESSION['pseudo']));
 
 
-echo'</br></br>Liste des permissions possedés :</br></br>';
+echo'</br></br>Liste des permissions possedÃ©s :</br></br>';
 while ($donnee = $req->fetch())
 {
 echo ''.$donnee['permission'].'</br>';
 }
-}
-	catch (Exception $e)
-	{
-        die('Erreur : ' . $e->getMessage());
-	}
+
 	
 
 

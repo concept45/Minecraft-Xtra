@@ -6,18 +6,12 @@
 <input type="password" name="cnewmdp"></br></br>
 Adresse e-mail actuelle :
  <?php 
- try
-{
-$bdd = database();
+global $bdd;
 $req = $bdd->prepare('SELECT * FROM users WHERE pseudo=?');
 $req->execute(array($_SESSION['pseudo']));
 $email = $req->fetch();
 echo $email['email'];
-}
-	catch (Exception $e)
-	{
-        die('Erreur : ' . $e->getMessage());
-	}
+
  ?></br>
 <label for="newemail">Nouvelle adresse e-mail :</label>
 <input type="text" name="newemail"></br></br>

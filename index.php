@@ -1,10 +1,15 @@
 <?php
-if (file_exists("config.php")) { //si l'installation a été éffectué
+	try
+{
+if (file_exists("config.php")) { //si l'installation a Ã©tÃ© Ã©ffectuÃ©
 include("fonctions.php");
+include_once("class/membre.class.php");
 error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 
+$bdd = database();
+
 session_start(); // On ouvre la session
-$monnaie = infoserveur('monnaie'); //on récupère les infos
+$monnaie = infoserveur('monnaie'); //on rÃ©cupÃ¨re les infos
 $ip = infoserveur('ip');
 $dons = infoserveur('dons');
 $allopass = infoserveur('allopass');
@@ -15,13 +20,15 @@ $menu_monnaie = infomenus('monnaie');
 $externe = infomenus('externe');
 $nomexterne = infomenus2('externe');
 
+$membre = new membre();
+$membre->setPseudo($_SESSION['pseudo']);
 
 ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
+<html>
    <head>
        <title>HappyWorld Xtra</title>
-       <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+       <meta charset="utf-8" />
        <link rel="stylesheet" media="screen" type="text/css" title="Design" href="design.css" />
    </head>
    <body>
@@ -59,22 +66,14 @@ if (isset($_GET['page'])) // Si la variable $_GET['page'] existe
 {
 	if ($_GET['page'] == 'connexion'&&isset($_POST['pseudo'])) //Si le membre se connecte
 	{
-	try
-	{
 	$_POST['pseudo'] = htmlspecialchars($_POST['pseudo']);
-	$bdd = database();
     $req=connexion($_POST['pseudo'], $bdd);
 	$connexion= ligne($req);
 	ident($connexion,$req);
-	}
 	
-	catch (Exception $e)
-	{
-        die('Erreur : ' . $e->getMessage());
-	}
 	}
 
-	if ($_GET['page'] == 'deconnexion') //Si le membre se déconnecte
+	if ($_GET['page'] == 'deconnexion') //Si le membre se dÃ©connecte
 	{
 	session_destroy();
 	header('Location: index.php');
@@ -89,7 +88,7 @@ if ($_GET['page'] == 'perms') //page des permissions
 		}
 		else
 		{
-		echo 'Votre compte n\'a pas encore été confirmé';
+		echo 'Votre compte n\'a pas encore Ã©tÃ© confirmÃ©';
 		}
 	}
 	else
@@ -107,7 +106,7 @@ if ($_GET['page'] == 'achatperm') //Acheter des permissions
 		}
 		else
 		{
-		echo 'Votre compte n\'a pas encore été confirmé';
+		echo 'Votre compte n\'a pas encore Ã©tÃ© confirmÃ©';
 		}
 	}
 	else
@@ -117,7 +116,7 @@ if ($_GET['page'] == 'achatperm') //Acheter des permissions
 }
 if ($_GET['page'] == 'achatpermok')//Achat permissions ok
 {
-echo'Achat de la permission réussi !';
+echo'Achat de la permission rÃ©ussi !';
 }
 	if ($_GET['page'] == 'inscription') //page d'inscription
 	{
@@ -125,26 +124,19 @@ echo'Achat de la permission réussi !';
 	}
 	if ($_GET['page'] == 'confirm')
 	{
-	try
-    {
-    $bdd = database();
     if ($_GET['action'] == 'augmente')
     {
     $req = $bdd->prepare('UPDATE users SET rang = rang+1 WHERE pseudo = ?');
     $req->execute(array($_GET['pseudo']));
-    echo 'L\'utilisateur '.$_GET['pseudo'].' a été gradé';
+    echo 'L\'utilisateur '.$_GET['pseudo'].' a Ã©tÃ© gradÃ©';
     }
     if ($_GET['action'] == 'diminue')
     {
     $req = $bdd->prepare('UPDATE users SET rang = rang-1 WHERE pseudo = ?');
     $req->execute(array($_GET['pseudo']));
-    echo 'L\'utilisateur '.$_GET['pseudo'].' a été dégradé';    
+    echo 'L\'utilisateur '.$_GET['pseudo'].' a Ã©tÃ© dÃ©gradÃ©';    
     }
-	}
-    catch (Exception $e)
-    {
-        die('Erreur : ' . $e->getMessage());
-    }
+
     }
 	if ($_GET['page'] == 'enregistrement') //traitement enregistrement
 	{
@@ -167,7 +159,7 @@ echo'Achat de la permission réussi !';
 		}
 		else
 		{
-		echo 'Votre compte n\'a pas encore été confirmé';
+		echo 'Votre compte n\'a pas encore Ã©tÃ© confirmÃ©';
 		}
 	}
 	else
@@ -187,7 +179,7 @@ echo'Achat de la permission réussi !';
 		}
 		else
 		{
-		echo 'Votre compte n\'a pas encore été confirmé';
+		echo 'Votre compte n\'a pas encore Ã©tÃ© confirmÃ©';
 		}
 	}
 	else
@@ -208,7 +200,7 @@ echo'Achat de la permission réussi !';
 		}
 		else
 		{
-		echo 'Votre compte n\'a pas encore été confirmé';
+		echo 'Votre compte n\'a pas encore Ã©tÃ© confirmÃ©';
 		}
 	}
 	else
@@ -235,7 +227,7 @@ $i = 0;
    <tr>
        <td>Nom</td>
        <td>Version</td>
-       <td>Compatibilité</td>
+       <td>CompatibilitÃ©</td>
    </tr>
    <?php
 while($file = readdir($dir)) {
@@ -247,7 +239,7 @@ while($file = readdir($dir)) {
 	$nom=preg_replace('#([a-z0-9&[\]]+)\.([a-z0-9_]+)\.([0-9]+)\.([0-9]+)\.([a-z]{3})#i','$1',$file);
 	$version=preg_replace('#([a-z0-9&[\]]+)\.([a-z0-9_])\.([0-9]+)\.([0-9]+)\.([a-z]{3})#i','$2',$file);
 	$minecraft=preg_replace('#([a-z0-9&[\]]+)\.([a-z0-9_]+)\.([0-9]+)\.([0-9]+)\.([a-z]{3})#i','$3.$4',$file);
-	echo '<a href="'.$dirname.$file.'">'.$nom.'</a>&nbsp;&nbsp;&nbsp;&nbsp; Version :'.$version.' &nbsp;&nbsp;&nbsp;&nbsp;Compatibilité :'.$minecraft.'</br></br></br>' ;
+	echo '<a href="'.$dirname.$file.'">'.$nom.'</a>&nbsp;&nbsp;&nbsp;&nbsp; Version :'.$version.' &nbsp;&nbsp;&nbsp;&nbsp;CompatibilitÃ© :'.$minecraft.'</br></br></br>' ;
 	$i++;
 	} 
 	else{
@@ -279,7 +271,7 @@ else
     }
     else
 		{
-		echo 'Votre compte n\'a pas encore été confirmé';
+		echo 'Votre compte n\'a pas encore Ã©tÃ© confirmÃ©';
 		}
 	}
     else
@@ -300,5 +292,12 @@ echo $acceuil;
 </html>
 <?php
 }
-else
-header('Location: installation.php');
+else {
+header('Location: installation.php'); }
+
+
+	}
+	catch (Exception $e)
+	{
+        die('Erreur : ' . $e->getMessage());
+	}
