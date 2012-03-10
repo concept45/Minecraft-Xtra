@@ -35,7 +35,7 @@ $membre->setPseudo($_SESSION['pseudo']);
 <div id="header_bg">
 <div id="connexion"><h3>Etat du serveur :<?php etat();?></h3></div>
 <div id="logo"></div>
-<div id ="version">Beta 1.0</div>
+<div id ="version">Beta 1.1</div>
 <div id="achev"><p>Adresse ip :</p><p><?php echo $ip;?></p></div>
 </div>
 <nav>
