@@ -88,6 +88,7 @@ function connecticonomy ($user)
 
 function connexion ($user, $bdd)
 {
+	$user = utf8_decode($user);
     $req = $bdd->prepare('SELECT * FROM users WHERE pseudo=?');
 	$req->execute(array($user));
 	return $req;
@@ -195,8 +196,10 @@ echo 'Informations manquantes';
 }
 function ident ($nb_ligne,$req)
 {
+global $bdd;
 $_POST['mdp']= htmlspecialchars($_POST['mdp']);
 $mdp = hachage($_POST['mdp']);
+
 while ($donnees = $req->fetch())
 {
 $sqlmdp = $donnees['pass'];
@@ -220,6 +223,7 @@ if (($nb_ligne ==0)||($sqlmdp !=$mdp))
     $req = $bdd->prepare('UPDATE users SET dateattaque = NOW(), nombreattaques = 1, ip=? WHERE pseudo = ?');
     $req->execute(array($ip,$_POST['pseudo']));
 	echo 'Connexion échoué';
+
     }
     else
     {
