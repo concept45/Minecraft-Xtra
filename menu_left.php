@@ -55,6 +55,7 @@ else
 	while ($donnees = $req->fetch())
 	{
 	$chiffre++;
+	$donnees['pseudo']= utf8_encode($donnees['pseudo']);
 	?>
 	<p><?php echo ''.$chiffre.'.'.$donnees['pseudo'].' '.$donnees['dons'].''; }?></p>
 	</div>
