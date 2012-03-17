@@ -41,7 +41,7 @@ $bdd = new PDO('mysql:host='.$host.';dbname='.$dbname.'', ''.$user.'', ''.$mdp.'
 $req = $bdd->query('CREATE TABLE IF NOT EXISTS `allopass` (
   `Pseudo` varchar(255) NOT NULL,
   `code` varchar(255) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;');
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;');
 echo'Installation de "allopass" réussi !</br>';
 
 
@@ -50,7 +50,7 @@ $req = $bdd->query('CREATE TABLE IF NOT EXISTS `config` (
   `nom` varchar(255) NOT NULL,
   `valeur` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;');
 
 
 $bdd->exec('INSERT INTO `config` (`id`, `nom`, `valeur`) VALUES
@@ -70,7 +70,7 @@ $req = $bdd->query('CREATE TABLE IF NOT EXISTS `menus` (
   `valeur` varchar(255) NOT NULL,
   `valeur2` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;');
 
 $bdd->exec('INSERT INTO `menus` (`id`, `nom`, `valeur`, `valeur2`) VALUES
 (1, \'perms\', \'1\', \'\'),
@@ -84,7 +84,7 @@ $req = $bdd->query('CREATE TABLE IF NOT EXISTS `prachat` (
   `permissions` varchar(255) NOT NULL,
   `prix` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;');
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;');
 
 $bdd->exec('INSERT INTO `prachat` (`id`, `permissions`, `prix`) VALUES
 (5, \'falsebook.blocks.bridge\', 35),
@@ -105,7 +105,7 @@ $req = $bdd->query('CREATE TABLE IF NOT EXISTS `users` (
   `nombreattaques` int(11) NOT NULL,
   `ip` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;');
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;');
 echo'Installation de "users" réussi !</br></br></br></br>';
 echo'Veuillez saisir les informations du compte administrateur :</br></br>';
 ?>
@@ -130,6 +130,7 @@ $prefix = 'lsfdjlsds-è_ççsà)dsf)isdjfdsbkh';
 $sufix = 'dsfhsdhf_eyaàçzeruzyfshsdf,';
 $mdp =''.$prefix.''.$_POST['mdp'].''.$sufix.'';
 $mdp = sha1($mdp);
+
 $req = $bdd->prepare('INSERT INTO users(pseudo, pass, rang) VALUES(?, ?, ?)');
 $req -> execute(array($_POST['pseudo'],$mdp,2));
 echo 'Installation effectué avec succès, supprimer "installation.php" pour des raisons de sécurité';
