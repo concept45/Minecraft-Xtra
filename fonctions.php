@@ -88,7 +88,6 @@ function connecticonomy ($user)
 
 function connexion ($user, $bdd)
 {
-	$user = utf8_decode($user);
     $req = $bdd->prepare('SELECT * FROM users WHERE pseudo=?');
 	$req->execute(array($user));
 	return $req;
@@ -211,7 +210,7 @@ $bdd_ip = $donnees['ip'];
 $ip = $_SERVER['REMOTE_ADDR'];
 }
 $date = date('Y-m-d');
-
+$pseudo = $_POST['pseudo'];
 
 if (($attaques < 5 && $date == $tempsbdd ) || ($tempsbdd != $date) || ($ip != $bdd_ip))
 {
@@ -221,22 +220,24 @@ if (($nb_ligne ==0)||($sqlmdp !=$mdp))
     {
     global $bdd;
     $req = $bdd->prepare('UPDATE users SET dateattaque = NOW(), nombreattaques = 1, ip=? WHERE pseudo = ?');
-    $req->execute(array($ip,$_POST['pseudo']));
+    $req->execute(array($ip,$pseudo));
 	echo 'Connexion échoué';
+echo $sqlmdp;
+echo $pseudo;
 
     }
     else
     {
     global $bdd;
     $req = $bdd->prepare('UPDATE users SET dateattaque = NOW(), nombreattaques = nombreattaques+1, ip=? WHERE pseudo = ?');
-    $req->execute(array($ip,$_POST['pseudo']));
+    $req->execute(array($ip,$pseudo));
 	echo 'Connexion échoué';
     }
     }
 	else
 	{
 	$resultat = $nb_ligne;
-	$_SESSION['pseudo'] = $_POST['pseudo'];
+	$_SESSION['pseudo'] = $pseudo;
 	$_SESSION['rang'] = $rang;
     $_SESSION['email'] = $email;
 	header('Location: index.php');
