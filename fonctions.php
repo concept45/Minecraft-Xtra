@@ -222,9 +222,6 @@ if (($nb_ligne ==0)||($sqlmdp !=$mdp))
     $req = $bdd->prepare('UPDATE users SET dateattaque = NOW(), nombreattaques = 1, ip=? WHERE pseudo = ?');
     $req->execute(array($ip,$pseudo));
 	echo 'Connexion échoué';
-echo $sqlmdp;
-echo $pseudo;
-
     }
     else
     {
